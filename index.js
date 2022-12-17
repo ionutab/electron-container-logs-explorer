@@ -46,12 +46,14 @@ app.on('window-all-closed', () => {
 /** 
  * FUNCTION YOU WANT ACCESS TO ON THE FRONTEND
  */
-ipcMain.handle('myfunc', async (event, arg) => {
+ipcMain.handle('listContainers', async (event, arg) => {
     return new Promise(function (resolve, reject) {
+        const myx = function(data){
+            resolve(data);
+        }
+        const containerList = runCommand("dir", myx)
         // do stuff
-        if (true) {
-            resolve("this worked!");
-        } else {
+        if (false) {
             reject("this didn't work!");
         }
     });
@@ -61,26 +63,13 @@ ipcMain.handle('myfunc', async (event, arg) => {
 // code. You can also put them in separate files and require them here.
 
 // Add a method to run a shell command.
-function runCommand(command) {
+function runCommand(command, callback) {
     exec(command, (error, stdout, stderr) => {
         if (error) {
             console.error(`exec error: ${error}`)
             return
         }
         console.log(`stdout: ${stdout}`)
-        console.log(`stderr: ${stderr}`)
-        // Send a message to the main process with the data.
-        ipcRenderer.send('command-output', { stdout, stderr })
+        callback(stdout)
     })
 }
-
-// Listen for the 'run-command' message from the renderer process.
-ipcMain.on('run-command', (event, command) => {
-    log.debug('ipcMain received run-command')
-    runCommand(command)
-})
-
-ipcMain.on('command-output', (event, command) => {
-    log.debug('ipcMain received command-output')
-    ipcRenderer.runCommand('alert("lol")')
-})

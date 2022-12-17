@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', () => {
 })
 
 /**
- * HERE YOU WILL EXPOSE YOUR 'myfunc' FROM main.js
+ * HERE YOU WILL EXPOSE YOUR 'listContainers' FROM main.js
  * TO THE FRONTEND.
  * (remember in main.js, you're putting preload.js
  * in the electron window? your frontend js will be able
@@ -27,9 +27,9 @@ window.addEventListener('DOMContentLoaded', () => {
 contextBridge.exposeInMainWorld(
     "api", {
     invoke: (channel, data) => {
-        let validChannels = ["myfunc"]; // list of ipcMain.handle channels you want access in frontend to
+        let validChannels = ["listContainers"]; // list of ipcMain.handle channels you want access in frontend to
         if (validChannels.includes(channel)) {
-            // ipcRenderer.invoke accesses ipcMain.handle channels like 'myfunc'
+            // ipcRenderer.invoke accesses ipcMain.handle channels like 'listContainers'
             // make sure to include this return statement or you won't get your Promise back
             return ipcRenderer.invoke(channel, data);
         }
