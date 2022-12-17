@@ -1,5 +1,5 @@
 {
-  "name": "electron-docker-logs-explorer",
+  "name": "electron-container-logs-explorer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
