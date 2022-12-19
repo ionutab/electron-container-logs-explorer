@@ -64,8 +64,8 @@ ipcMain.handle('listContainers', async (event, arg) => {
 
 
 
-ipcMain.handle('listContainerLogs', async (event, arg) => {
-    const containerId = args.containerId
+ipcMain.handle('listContainerLogs', async (event, args) => {
+    const containerId = args[0]
     return new Promise(function (resolve, reject) {
         const commandOutputCallback = function(data){
             const split = parseContainerListCommandOutput(data)

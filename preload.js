@@ -27,7 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
 contextBridge.exposeInMainWorld(
     "api", {
     invoke: (channel, data) => {
-        let validChannels = ["listContainers"]; // list of ipcMain.handle channels you want access in frontend to
+        let validChannels = ['listContainers', 'listContainerLogs']; // list of ipcMain.handle channels you want access in frontend to
         if (validChannels.includes(channel)) {
             // ipcRenderer.invoke accesses ipcMain.handle channels like 'listContainers'
             // make sure to include this return statement or you won't get your Promise back
