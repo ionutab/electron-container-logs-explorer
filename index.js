@@ -49,9 +49,29 @@ app.on('window-all-closed', () => {
 ipcMain.handle('listContainers', async (event, arg) => {
     return new Promise(function (resolve, reject) {
         const myx = function(data){
-            resolve(data);
+            let split = parseContainerListCommandOutput(data)
+            // remove the first and las item
+            split = split.slice(1, -1)
+            resolve(split);
         }
-        const containerList = runCommand("dir", myx)
+        const containerList = runCommand('docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Ports}}"', myx)
+        // do stuff
+        if (false) {
+            reject("this didn't work!");
+        }
+    });
+});
+
+
+
+ipcMain.handle('listContainerLogs', async (event, arg) => {
+    const containerId = args.containerId
+    return new Promise(function (resolve, reject) {
+        const commandOutputCallback = function(data){
+            const split = parseContainerListCommandOutput(data)
+            resolve(split);
+        }
+        const containerList = runCommand(`docker logs ${containerId}`, commandOutputCallback)
         // do stuff
         if (false) {
             reject("this didn't work!");
@@ -72,4 +92,8 @@ function runCommand(command, callback) {
         console.log(`stdout: ${stdout}`)
         callback(stdout)
     })
+}
+
+function parseContainerListCommandOutput(listContainersOutput){
+    return listContainersOutput.split(/\r?\n/);
 }
