@@ -1,3 +1,8 @@
+'use strict'
+
+window.$ = window.jQuery = require('jquery')
+window.Tether = require('tether')
+window.Bootstrap = require('bootstrap')
 
 const containersPage = document.getElementById('containers-page')
 const containerTableBody = document.getElementById('containers-container-tbody')

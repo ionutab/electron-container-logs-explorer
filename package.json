@@ -13,6 +13,8 @@
     "electron": "^22.0.0"
   },
   "dependencies": {
-    "electron-log": "^4.4.8"
+    "bootstrap": "^5.2.3",
+    "electron-log": "^4.4.8",
+    "jquery": "^3.6.2"
   }
 }

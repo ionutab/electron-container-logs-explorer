@@ -12,7 +12,11 @@ const createWindow = () => {
         width: 800,
         height: 800,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: true,
+            defaultEncoding: 'UTF-8',
+            worldSafeExecuteJavaScript: true,
+            enableRemoteModule: true
         }
     })
 
@@ -48,7 +52,7 @@ app.on('window-all-closed', () => {
  */
 ipcMain.handle('listContainers', async (event, arg) => {
     return new Promise(function (resolve, reject) {
-        const myx = function(data){
+        const myx = function (data) {
             let split = parseContainerListCommandOutput(data)
             // remove the first and las item
             split = split.slice(1, -1)
@@ -67,7 +71,7 @@ ipcMain.handle('listContainers', async (event, arg) => {
 ipcMain.handle('listContainerLogs', async (event, args) => {
     const containerId = args[0]
     return new Promise(function (resolve, reject) {
-        const commandOutputCallback = function(data){
+        const commandOutputCallback = function (data) {
             const split = parseContainerListCommandOutput(data)
             resolve(split);
         }
@@ -94,6 +98,6 @@ function runCommand(command, callback) {
     })
 }
 
-function parseContainerListCommandOutput(listContainersOutput){
+function parseContainerListCommandOutput(listContainersOutput) {
     return listContainersOutput.split(/\r?\n/);
 }
