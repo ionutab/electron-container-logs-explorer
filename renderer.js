@@ -51,6 +51,7 @@ containersViewTrigger.addEventListener('click', e => {
 })
 
 const replaceContainerLogs = function (res) {
+    logsBucket.innerHTML = ''
     for (let i = 0; i < res.length; i++) {
         const logRow = document.createElement('p')
         logRow.appendChild(document.createTextNode(res[i]))
