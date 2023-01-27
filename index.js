@@ -13,7 +13,8 @@ const createWindow = () => {
         height: 800,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
-        }
+        },
+        icon: __dirname + '/assets/electron-logs.ico'
     })
 
     // and load the index.html of the app.
