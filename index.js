@@ -1,10 +1,10 @@
 // index.js
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain, ipcRenderer } = require('electron')
+const { app, BrowserWindow } = require('electron')
 const path = require('path')
-const { exec } = require('child_process')
-const log = require('electron-log');
+const rh = require('./src/controllers')
+
 
 const createWindow = () => {
     // Create the browser window.
@@ -22,6 +22,9 @@ const createWindow = () => {
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
+    mainWindow.maximize();
+    // register handlers
+    rh.registerHandlers();
 }
 
 // This method will be called when Electron has finished
@@ -43,58 +46,3 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit()
 })
-
-/** 
- * FUNCTION YOU WANT ACCESS TO ON THE FRONTEND
- */
-ipcMain.handle('listContainers', async (event, arg) => {
-    return new Promise(function (resolve, reject) {
-        const myx = function(data){
-            let split = parseContainerListCommandOutput(data)
-            // remove the first and las item
-            split = split.slice(1, -1)
-            resolve(split);
-        }
-        const containerList = runCommand('docker ps -a --format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Ports}}"', myx)
-        // do stuff
-        if (false) {
-            reject("this didn't work!");
-        }
-    });
-});
-
-
-
-ipcMain.handle('listContainerLogs', async (event, args) => {
-    const containerId = args[0]
-    return new Promise(function (resolve, reject) {
-        const commandOutputCallback = function(data){
-            const split = parseContainerListCommandOutput(data)
-            resolve(split);
-        }
-        const containerList = runCommand(`docker logs ${containerId}`, commandOutputCallback)
-        // do stuff
-        if (false) {
-            reject("this didn't work!");
-        }
-    });
-});
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
-
-// Add a method to run a shell command.
-function runCommand(command, callback) {
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`exec error: ${error}`)
-            return
-        }
-        console.log(`stdout: ${stdout}`)
-        callback(stdout)
-    })
-}
-
-function parseContainerListCommandOutput(listContainersOutput){
-    return listContainersOutput.split(/\r?\n/);
-}

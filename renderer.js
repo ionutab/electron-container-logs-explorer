@@ -1,4 +1,3 @@
-
 const containersPage = document.getElementById('containers-page')
 const containerTableBody = document.getElementById('containers-container-tbody')
 const containerTableRowTemplate = document.getElementById('container-table-row')
