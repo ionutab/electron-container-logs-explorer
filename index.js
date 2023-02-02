@@ -54,7 +54,7 @@ ipcMain.handle('listContainers', async (event, arg) => {
             split = split.slice(1, -1)
             resolve(split);
         }
-        const containerList = commandRunner.runSpawn('docker', ['ps', '-a', '--format "table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Ports}}"'], myx)
+        const containerList = commandRunner.runSpawn('docker', ['ps', '-a', '--format', '"table {{.ID}}\t{{.Image}}\t{{.Names}}\t{{.Ports}}"'], myx)
         // do stuff
         if (false) {
             reject("this didn't work!");
